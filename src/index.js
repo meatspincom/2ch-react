@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/app";
 import Thread from "./components/thread";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import createBrowserHistory from "history/createBrowserHistory";
 
 const history = createBrowserHistory;
 class Home extends React.Component{
   render(){
-  return <Link to="/b">Go /b/</Link>
+  return <Redirect to="/b"></Redirect>
 }}
 
 
