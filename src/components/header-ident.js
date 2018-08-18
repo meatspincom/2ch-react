@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import avaImg from "../img/ava.jpg";
 
 const Nick = styled.div`
   display: block;
@@ -11,7 +12,7 @@ const Nick = styled.div`
 const Ava = styled.span`
   height: 20px;
   width: 20px;
-  background: url("/ava.jpg") no-repeat;
+  background: url(${avaImg}) no-repeat;
   background-size: 20px 20px;
   margin-top: 11px;
   margin-left: 10px;

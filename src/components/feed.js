@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import avaImg from "../img/ava.jpg";
+import clipImg from "../img/clip.png"
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,7 +13,7 @@ const Wrapper = styled.div`
 const Ava = styled.span`
   height: 20px;
   width: 20px;
-  background: url("/ava.jpg") no-repeat;
+  background: url(${avaImg}) no-repeat;
   background-size: 20px 20px;
   display: block;
   border-radius: 200px;
@@ -21,7 +23,7 @@ const Ava = styled.span`
 const PostAva = styled.span`
   height: 50px;
   width: 50px;
-  background: url("/ava.jpg") no-repeat;
+  background: url(${avaImg}) no-repeat;
   background-size: 50px 50px;
   display: block;
   border-radius: 200px;
@@ -31,7 +33,7 @@ const PostAva = styled.span`
 const CommentAva = styled.span`
   height: 35px;
   width: 35px;
-  background: url("/ava.jpg") no-repeat;
+  background: url(${avaImg}) no-repeat;
   background-size: 35px 35px;
   display: block;
   border-radius: 200px;
@@ -61,7 +63,7 @@ const CreatePostInput = styled.input`
 const Clip = styled.span`
   height: 20px;
   width: 20px;
-  background: url("./clip.png") no-repeat;
+  background: url(${clipImg}) no-repeat;
   background-size: 20px 20px;
   display: block;
 `;

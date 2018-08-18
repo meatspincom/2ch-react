@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Ident from "./header-ident";
 import HeaderBoard from "./header-board-thread";
+import logo from "../img/header-logo.png";
 
 const HeaderS = styled.header`
   max-width: 100%;
@@ -20,7 +21,7 @@ const Nav = styled.div`
 const HeaderLogo = styled.span`
   height: 20px;
   width: 15px;
-  background: url("/header-logo.png") no-repeat;
+  background: url(${logo}) no-repeat;
   background-size: 15px 20px;
   background-position-y: 11px;
   padding-top: 11px;

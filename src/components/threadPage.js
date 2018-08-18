@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import avaImg from "../img/ava.jpg";
 
 const PostImg = styled.img`
   height: auto;
@@ -34,7 +35,7 @@ const FlexRow = styled.div`
 const PostAva = styled.span`
   height: 50px;
   width: 50px;
-  background: url("/ava.jpg") no-repeat;
+  background: url(${avaImg}) no-repeat;
   background-size: 50px 50px;
   display: block;
   border-radius: 200px;
