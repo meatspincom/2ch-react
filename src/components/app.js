@@ -1,8 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import {Route, Switch, Redirect } from "react-router-dom";
 import Header from "./header";
 import Boardlist from "./boardlist";
 import Feed from "./feed";
+import Thread from "./thread";
+
+class Home extends React.Component{
+  render(){
+  return <Redirect to="/b"></Redirect>
+}}
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,10 +25,17 @@ class App extends React.Component {
   render() {
     return (
       <div>
-          <Header board={this.props.match.params.board.slice(0)} />
+          <Switch>
+            <Route path="/:board/" exact component={Header} />
+            <Route path="/:board/res/:thread" component={Header} />
+          </Switch>
           <Wrapper>
             <Boardlist />
-            <Feed board={this.props.match.params.board.slice(0)} />
+            <Switch>
+              <Route path="/:board" exact component={Feed} />
+              <Route path="/:board/res/:thread" exact component={Thread} />
+              <Route path="/" component={Home} />
+            </Switch>
           </Wrapper>
       </div>
     );

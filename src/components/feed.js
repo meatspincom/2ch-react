@@ -1,9 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { consolidateStreamedStyles } from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 import avaImg from "../img/ava.jpg";
 import clipImg from "../img/clip.png"
+import { isString } from "util";
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,7 +62,49 @@ const CreatePostInput = styled.input`
   width: 460px;
   margin: 0 10px;
 `;
-const Clip = styled.span`
+const SubmitPost = styled.a`
+    padding: 7px 16px 8px;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    background-color: #EFEEEC;
+    border-radius: 4px;
+    margin-left: 438px;
+`
+const CreatePostTextArea = styled.textarea`
+  height: 50px;
+  border: 0px;
+  width: 460px;
+  margin: 0 8px;
+  margin-top: 1px;
+  resize: none;
+  :focus{
+    outline:0;
+  }
+`;
+const CreateCommentTextArea = styled.textarea`
+  height: 50px;
+  border: 0px;
+  width: 460px;
+  margin: 0 8px;
+  margin-top: 8px;
+  resize: none;
+  :focus{
+    outline:0;
+  }
+`;
+const Clip = styled.label`
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  background: url(${clipImg}) no-repeat;
+  background-size: 20px 20px;
+  margin-top: 10px;
+  display: block;
+`;
+const PostClip = styled.label`
+  cursor: pointer;
   height: 20px;
   width: 20px;
   background: url(${clipImg}) no-repeat;
@@ -150,7 +194,8 @@ class Feed extends React.Component {
           ]
         }
       ]
-    }
+    },
+    isPostActive: false
   };
   getArr(url) {
     axios
@@ -164,7 +209,7 @@ class Feed extends React.Component {
   }
   componentDidMount() {
     this.getArr(`https://cors-anywhere.herokuapp.com/https://2ch.hk/${
-      this.props.board
+      this.props.match.params.board.slice(0)
     }/index.json`);
   }
   componentWillReceiveProps(nextProps) {
@@ -185,7 +230,7 @@ class Feed extends React.Component {
       }
     });
     const url = `https://cors-anywhere.herokuapp.com/https://2ch.hk/${
-      nextProps.board
+      nextProps.location.pathname.slice(0)
     }/index.json`;
     this.getArr(url);
   }
@@ -207,7 +252,7 @@ class Feed extends React.Component {
         <Line />
         {item.posts_count > 4 && (
           <ShowComments>
-            <Link to={"/" + this.props.board + "/res/" + item.thread_num}>
+            <Link to={"/" + this.props.match.params.board.slice(0) + "/res/" + item.thread_num}>
               Показать еще {item.posts_count} комментариев
             </Link>
           </ShowComments>
@@ -229,21 +274,31 @@ class Feed extends React.Component {
             <Line />
           </Comment>
         ))}
-        <FlexRow>
-          <CommentAva />
-          <CreatePostInput placeholder="Написать комментарий..." />
-          <Clip />
-        </FlexRow>
+        <div>
+          <FlexRow>
+            <CommentAva/>
+            {!this.state[item.thread_num] && <CreatePostInput onFocus={() => {let update = {}; update[item.thread_num] = true; this.setState(update)}} placeholder="Написать комментарий.." />}
+            {this.state[item.thread_num] && <CreateCommentTextArea autoFocus onBlur={() => {let update = {}; update[item.thread_num] = false; this.setState(update)}}placeholder="Написать комментарий.." />}
+            <Clip htmlFor={`file-${item.thread_num}`} />
+            <input id={`file-${item.thread_num}`} type="file" accept="image/*,video/mp4,video/webm" />
+          </FlexRow>
+          {this.state[item.thread_num] && <SubmitPost>Отправить</SubmitPost>}
+        </div>
       </Block>
     ));
     return (
       <Wrapper>
         <Block>
-          <FlexRow>
-            <Ava />
-            <CreatePostInput placeholder="Что у Вас нового?" />
-            <Clip />
-          </FlexRow>
+          <div>
+            <FlexRow>
+              <Ava />
+              {!this.state.isPostActive && <CreatePostInput onFocus={() => {this.setState({...this.state, isPostActive:true})}} placeholder="Что у Вас нового?" />}
+              {this.state.isPostActive && <CreatePostTextArea onBlur={() => {this.setState({...this.state, isPostActive:false})}} autoFocus placeholder="Что у Вас нового?" />}
+              <PostClip htmlFor="file-0" />
+              <input id="file-0" type="file" accept="image/*,video/mp4,video/webm" />
+            </FlexRow>
+            {this.state.isPostActive && <SubmitPost>Отправить</SubmitPost>}
+          </div>
         </Block>
         {thread}
       </Wrapper>

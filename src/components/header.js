@@ -33,7 +33,7 @@ const Header = props => {
     <HeaderS>
       <Nav>
         <HeaderLogo />
-        <HeaderBoard board={props.board} thread={props.thread} />
+        <HeaderBoard board={props.match.params.board} thread={props.match.params.thread} />
         <Ident />
       </Nav>
     </HeaderS>

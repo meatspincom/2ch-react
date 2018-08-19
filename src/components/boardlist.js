@@ -98,7 +98,7 @@ class Boardlist extends React.Component {
           <BoardUl>
             {this.state.data[Object.keys(this.state.data)[index]].map(
               (item, index) => (
-                <BoardlistItem>
+                <BoardlistItem key={index}>
                   <Link to={"/" + item.id}>
                     {" /"}
                     {item.id}

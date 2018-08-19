@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import avaImg from "../img/ava.jpg";
+import clipImg from "../img/clip.png"
 
 const PostImg = styled.img`
   height: auto;
@@ -13,6 +14,16 @@ const PostImg = styled.img`
 const Block = styled.div`
   border-top: #cecdcc solid 1px !important;
   padding: 15px 20px;
+  border: 0px;
+  background: #ffffff;
+  margin-left: 15px;
+  width: 550px;
+`;
+
+const CommentBlock = styled.div`
+  border-top: #cecdcc solid 1px !important;
+  padding: 15px 20px;
+  margin-bottom: 50px;
   border: 0px;
   background: #ffffff;
   margin-left: 15px;
@@ -60,6 +71,57 @@ const PostDate = styled.p`
   margin-top: 6px;
 `;
 
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`
+
+const CommentAva = styled.span`
+  height: 35px;
+  width: 35px;
+  background: url(${avaImg}) no-repeat;
+  background-size: 35px 35px;
+  display: block;
+  border-radius: 200px;
+  border: 0px solid #000000;
+`;
+const CreatePostInput = styled.input`
+  border: 0px;
+  width: 460px;
+  margin: 0 10px;
+`;
+const SubmitPost = styled.a`
+    padding: 7px 16px 8px;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    background-color: #EFEEEC;
+    border-radius: 4px;
+    margin-left: 438px;
+`
+const CreateCommentTextArea = styled.textarea`
+  height: 50px;
+  border: 0px;
+  width: 460px;
+  margin: 0 8px;
+  margin-top: 8px;
+  resize: none;
+  :focus{
+    outline:0;
+  }
+`;
+const Clip = styled.label`
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  background: url(${clipImg}) no-repeat;
+  background-size: 20px 20px;
+  margin-top: 10px;
+  display: block;
+`;
+
 class ThreadPage extends React.Component {
   state = {
     data: {
@@ -96,11 +158,11 @@ class ThreadPage extends React.Component {
   }
   render() {
     const thread = this.state.data.threads[0].posts.map(item => (
-      <Block>
+      <Block key={item.num}>
         <FlexRow>
           <PostAva />
           <NameForm>
-            <PostName>Аноним №{item.num}</PostName>
+            <NameContainer><PostName>Аноним №{item.num}</PostName></NameContainer>
             <PostDate>{item.date}</PostDate>
           </NameForm>
         </FlexRow>
@@ -110,7 +172,19 @@ class ThreadPage extends React.Component {
         ))}
       </Block>
     ));
-    return <div>{thread}</div>;
+    return <div>
+      {thread}
+      <CommentBlock>
+          <FlexRow>
+            <CommentAva />
+            {!this.state[this.props.thread] && <CreatePostInput onFocus={() => {let update = {}; update[this.props.thread] = true; this.setState(update)}} placeholder="Написать комментарий.." />}
+            {this.state[this.props.thread] && <CreateCommentTextArea autoFocus onBlur={() => {let update = {}; update[this.props.thread] = false; this.setState(update)}}placeholder="Написать комментарий.." />}
+            <Clip htmlFor={`file-${this.props.thread}`} />
+            <input id={`file-${this.props.thread}`} type="file" accept="image/*,video/mp4,video/webm" />
+          </FlexRow>
+          {this.state[this.props.thread] && <SubmitPost>Отправить</SubmitPost>}
+      </CommentBlock>
+      </div>;
   }
 }
 

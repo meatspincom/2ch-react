@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import Header from "./header-thread";
-import Boardlist from "./boardlist";
 import ThreadPage from './threadPage';
 
 const GoBackButton = styled.p`
-  margin-left: 5px;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background: white;
+  padding: 0px 5px;
+  padding-bottom: 4px;
+  margin-top: 62px;
+  margin-left: 100px;
   cursor: pointer;
   height: 16px;
 `
@@ -21,10 +26,8 @@ class Thread extends React.Component {
   render() {
     return (
       <div>
-        <Header board={this.props.match.params.board.slice(0)} thread={this.props.match.params.thread.slice(0)}/>
         <Wrapper>
-          <GoBackButton onClick={() => {this.props.history.goBack()}}>←</GoBackButton>
-          <Boardlist />
+        <GoBackButton onClick={this.props.history.goBack}>←</GoBackButton>
           <ThreadPage board={this.props.match.params.board.slice(0)} thread={this.props.match.params.thread.slice(0)}/>
         </Wrapper>
       </div>
